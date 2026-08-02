@@ -1,8 +1,7 @@
 // =========================
 // Music Player Pro
-// JavaScript
+// Complete script.js
 // =========================
-
 
 const audio = document.getElementById("audio");
 
@@ -15,33 +14,34 @@ const artist = document.getElementById("artist");
 const cover = document.getElementById("cover");
 
 const progress = document.getElementById("progress");
+const volume = document.getElementById("volume");
 
 const songList = document.getElementById("songList");
 
 
-// Songs Data
+// Songs
 
 const songs = [
 
 {
-name:"Song 1",
-artist:"Artist 1",
-src:"songs/song1.mp3",
-image:"cover.jpg"
+    name:"Song 1",
+    artist:"Artist 1",
+    src:"songs/song1.mp3",
+    image:"cover.jpg"
 },
 
 {
-name:"Song 2",
-artist:"Artist 2",
-src:"songs/song2.mp3",
-image:"cover.jpg"
+    name:"Song 2",
+    artist:"Artist 2",
+    src:"songs/song2.mp3",
+    image:"cover.jpg"
 },
 
 {
-name:"Song 3",
-artist:"Artist 3",
-src:"songs/song3.mp3",
-image:"cover.jpg"
+    name:"Song 3",
+    artist:"Artist 3",
+    src:"songs/song3.mp3",
+    image:"cover.jpg"
 }
 
 ];
@@ -54,8 +54,7 @@ let currentSong = 0;
 
 function loadSong(){
 
-let song = songs[currentSong];
-
+const song = songs[currentSong];
 
 title.innerText = song.name;
 
@@ -64,7 +63,6 @@ artist.innerText = song.artist;
 cover.src = song.image;
 
 audio.src = song.src;
-
 
 }
 
@@ -78,7 +76,10 @@ audio.play();
 
 playBtn.innerText="⏸";
 
+cover.classList.add("playing");
+
 }
+
 
 
 // Pause Song
@@ -89,14 +90,15 @@ audio.pause();
 
 playBtn.innerText="▶️";
 
+cover.classList.remove("playing");
+
 }
 
 
 
-// Play Button
+// Play / Pause Button
 
-playBtn.onclick=()=>{
-
+playBtn.onclick = ()=>{
 
 if(audio.paused){
 
@@ -108,30 +110,25 @@ pauseSong();
 
 }
 
-
 };
 
 
 
 // Next Song
 
-nextBtn.onclick=()=>{
-
+nextBtn.onclick = ()=>{
 
 currentSong++;
 
-
 if(currentSong >= songs.length){
 
-currentSong=0;
+currentSong = 0;
 
 }
-
 
 loadSong();
 
 playSong();
-
 
 };
 
@@ -139,73 +136,80 @@ playSong();
 
 // Previous Song
 
-prevBtn.onclick=()=>{
-
+prevBtn.onclick = ()=>{
 
 currentSong--;
 
-
 if(currentSong < 0){
 
-currentSong=songs.length-1;
+currentSong = songs.length - 1;
 
 }
-
 
 loadSong();
 
 playSong();
 
-
 };
 
 
 
-// Progress Bar
+// Progress Update
 
 audio.addEventListener("timeupdate",()=>{
 
+if(audio.duration){
 
 progress.value =
-(audio.currentTime / audio.duration) * 100 || 0;
+(audio.currentTime / audio.duration) * 100;
 
+}
 
 });
 
 
 
-progress.oninput=()=>{
+// Change Song Time
 
+progress.oninput = ()=>{
 
 audio.currentTime =
 (progress.value / 100) * audio.duration;
-
 
 };
 
 
 
-// Playlist
+// Volume Control
+
+if(volume){
+
+volume.oninput = ()=>{
+
+audio.volume = volume.value;
+
+};
+
+}
+
+
+
+// Create Playlist
 
 songs.forEach((song,index)=>{
 
+let li = document.createElement("li");
 
-let li=document.createElement("li");
-
-
-li.innerText =
-song.name;
+li.innerText = song.name;
 
 
-li.onclick=()=>{
+li.onclick = ()=>{
 
-
-currentSong=index;
+currentSong = index;
 
 loadSong();
 
 playSong();
-
 
 };
 
@@ -219,7 +223,7 @@ songList.appendChild(li);
 
 // Auto Next
 
-audio.onended=()=>{
+audio.onended = ()=>{
 
 nextBtn.click();
 
