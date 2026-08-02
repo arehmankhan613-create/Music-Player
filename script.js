@@ -24,24 +24,24 @@ const songList = document.getElementById("songList");
 const songs = [
 
 {
-    name:"Song 1",
-    artist:"Artist 1",
-    src:"songs/song1.mp3",
-    image:"cover.jpg"
+name:"Song 1",
+artist:"Artist 1",
+src:"songs/song1.mp3",
+image:"cover.jpg"
 },
 
 {
-    name:"Song 2",
-    artist:"Artist 2",
-    src:"songs/song2.mp3",
-    image:"cover.jpg"
+name:"Song 2",
+artist:"Artist 2",
+src:"songs/song2.mp3",
+image:"cover.jpg"
 },
 
 {
-    name:"Song 3",
-    artist:"Artist 3",
-    src:"songs/song3.mp3",
-    image:"cover.jpg"
+name:"Song 3",
+artist:"Artist 3",
+src:"songs/song3.mp3",
+image:"cover.jpg"
 }
 
 ];
@@ -54,10 +54,9 @@ let currentSong = 0;
 
 function loadSong(){
 
-const song = songs[currentSong];
+let song = songs[currentSong];
 
 title.innerText = song.name;
-
 artist.innerText = song.artist;
 
 cover.src = song.image;
@@ -67,22 +66,27 @@ audio.src = song.src;
 }
 
 
-
-// Play Song
+// Play
 
 function playSong(){
 
-audio.play();
+audio.play()
+.then(()=>{
 
 playBtn.innerText="⏸";
-
 cover.classList.add("playing");
+
+})
+.catch(()=>{
+
+alert("Song load nahi ho raha. songs folder check karo.");
+
+});
 
 }
 
 
-
-// Pause Song
+// Pause
 
 function pauseSong(){
 
@@ -95,10 +99,9 @@ cover.classList.remove("playing");
 }
 
 
+// Play Pause
 
-// Play / Pause Button
-
-playBtn.onclick = ()=>{
+playBtn.onclick=()=>{
 
 if(audio.paused){
 
@@ -114,15 +117,15 @@ pauseSong();
 
 
 
-// Next Song
+// Next
 
-nextBtn.onclick = ()=>{
+nextBtn.onclick=()=>{
 
 currentSong++;
 
 if(currentSong >= songs.length){
 
-currentSong = 0;
+currentSong=0;
 
 }
 
@@ -134,15 +137,15 @@ playSong();
 
 
 
-// Previous Song
+// Previous
 
-prevBtn.onclick = ()=>{
+prevBtn.onclick=()=>{
 
 currentSong--;
 
 if(currentSong < 0){
 
-currentSong = songs.length - 1;
+currentSong=songs.length-1;
 
 }
 
@@ -154,14 +157,14 @@ playSong();
 
 
 
-// Progress Update
+// Progress
 
 audio.addEventListener("timeupdate",()=>{
 
 if(audio.duration){
 
 progress.value =
-(audio.currentTime / audio.duration) * 100;
+(audio.currentTime/audio.duration)*100;
 
 }
 
@@ -169,43 +172,37 @@ progress.value =
 
 
 
-// Change Song Time
-
-progress.oninput = ()=>{
+progress.oninput=()=>{
 
 audio.currentTime =
-(progress.value / 100) * audio.duration;
+(progress.value/100)*audio.duration;
 
 };
 
 
 
-// Volume Control
+// Volume
 
-if(volume){
+volume.oninput=()=>{
 
-volume.oninput = ()=>{
-
-audio.volume = volume.value;
+audio.volume=volume.value;
 
 };
 
-}
 
 
-
-// Create Playlist
+// Playlist
 
 songs.forEach((song,index)=>{
 
-let li = document.createElement("li");
+let li=document.createElement("li");
 
-li.innerText = song.name;
+li.innerText=song.name;
 
 
-li.onclick = ()=>{
+li.onclick=()=>{
 
-currentSong = index;
+currentSong=index;
 
 loadSong();
 
@@ -216,14 +213,13 @@ playSong();
 
 songList.appendChild(li);
 
-
 });
 
 
 
 // Auto Next
 
-audio.onended = ()=>{
+audio.onended=()=>{
 
 nextBtn.click();
 
