@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Music Player Pro</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="player">
+
+<h1>🎵 Music Player Pro</h1>
+
+<img id="cover" src="cover.jpg">
+
+<h2 id="title">Song Name</h2>
+
+<p id="artist">Artist Name</p>
+
+
+<audio id="audio"></audio>
+
+
+<div class="progress-container">
+
+<input type="range" id="progress" value="0">
+
+</div>
+
+
+<div class="controls">
+
+<button id="prev">⏮</button>
+
+<button id="play">▶️</button>
+
+<button id="next">⏭</button>
+
+</div>
+
+
+<div class="playlist">
+
+<h3>Playlist</h3>
+
+<ul id="songList"></ul>
+
+</div>
+
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
