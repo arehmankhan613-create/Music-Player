@@ -22,28 +22,12 @@ const songList = document.getElementById("songList");
 // Songs
 
 const songs = [
-
 {
-name:"Song 1",
-artist:"Artist 1",
-src:"songs/song1.mp3",
-image:"cover.jpg"
-},
-
-{
-name:"Song 2",
-artist:"Artist 2",
-src:"songs/song2.mp3",
-image:"cover.jpg"
-},
-
-{
-name:"Song 3",
-artist:"Artist 3",
-src:"songs/song3.mp3",
-image:"cover.jpg"
+  name: "24 Songs",
+  artist: "Unknown Artist",
+  src: "24_Songs(48k).m4a",
+  image: "images.jpeg"
 }
-
 ];
 
 
