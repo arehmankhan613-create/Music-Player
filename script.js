@@ -199,6 +199,115 @@ sec="0"+sec;
 return `${min}:${sec}`;
 
 }// =========================
+// Part 3 (Final)
+// =========================
+
+// Shuffle
+
+shuffleBtn.onclick = ()=>{
+
+shuffle = !shuffle;
+
+if(shuffle){
+
+shuffleBtn.style.background="#22c55e";
+
+}else{
+
+shuffleBtn.style.background="#475569";
+
+}
+
+};
+
+
+// Repeat
+
+repeatBtn.onclick = ()=>{
+
+repeat = !repeat;
+
+audio.loop = repeat;
+
+if(repeat){
+
+repeatBtn.style.background="#22c55e";
+
+}else{
+
+repeatBtn.style.background="#475569";
+
+}
+
+};
+
+
+// Playlist
+
+songList.innerHTML="";
+
+songs.forEach((song,index)=>{
+
+let li=document.createElement("li");
+
+li.innerText=song.name;
+
+li.onclick=()=>{
+
+currentSong=index;
+
+loadSong();
+
+playSong();
+
+};
+
+songList.appendChild(li);
+
+});
+
+
+// Auto Next
+
+audio.onended=()=>{
+
+if(repeat){
+
+playSong();
+
+return;
+
+}
+
+if(shuffle){
+
+currentSong=Math.floor(Math.random()*songs.length);
+
+}else{
+
+currentSong++;
+
+if(currentSong>=songs.length){
+
+currentSong=0;
+
+}
+
+}
+
+loadSong();
+
+playSong();
+
+};
+
+
+// Start
+
+loadSong();
+
+audio.volume=1;
+volume.value=1;// =========================
 // Music Player Pro
 // Complete script.js
 // =========================
