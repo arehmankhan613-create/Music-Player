@@ -177,4 +177,31 @@ height:180px;
 
 }
 
+}.time{
+display:flex;
+justify-content:space-between;
+margin:10px 0;
+color:white;
+font-size:14px;
+}
+
+.controls{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:12px;
+}
+
+.controls button{
+width:55px;
+height:55px;
+border:none;
+border-radius:50%;
+font-size:22px;
+cursor:pointer;
+transition:.3s;
+}
+
+.controls button:hover{
+transform:scale(1.1);
 }
