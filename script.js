@@ -1,48 +1,10 @@
-
-playSong();
-
-return;
-
-}
-
-if(shuffle){
-
-currentSong=Math.floor(Math.random()*songs.length);
-
-}else{
-
-currentSong++;
-
-if(currentSong>=songs.length){
-
-currentSong=0;
-
-}
-
-}
-
-loadSong();
-
-playSong();
-
-};
-
-
-// Start
-
-loadSong();
-
-audio.volume=1;
-volume.value=1;// =========================
-// Music Player Pro
-// Complete script.js
-// =========================
-
 const audio = document.getElementById("audio");
 
 const playBtn = document.getElementById("play");
 const nextBtn = document.getElementById("next");
 const prevBtn = document.getElementById("prev");
+const shuffleBtn = document.getElementById("shuffle");
+const repeatBtn = document.getElementById("repeat");
 
 const title = document.getElementById("title");
 const artist = document.getElementById("artist");
@@ -51,200 +13,230 @@ const cover = document.getElementById("cover");
 const progress = document.getElementById("progress");
 const volume = document.getElementById("volume");
 
+const current = document.getElementById("current");
+const duration = document.getElementById("duration");
+
 const songList = document.getElementById("songList");
 
-
-// Songs
+// ===== Songs =====
 
 const songs = [
 {
-  name: "24 Songs",
-  artist: "Unknown Artist",
-  src: "24_Songs(48k).m4a",
-  image: "images.jpeg"
+    name: "24 Songs",
+    artist: "Unknown Artist",
+    src: "24_Songs(48k).m4a",
+    image: "images.jpeg"
 }
 ];
 
-
 let currentSong = 0;
+let shuffle = false;
+let repeat = false;
 
-
-// Load Song
+// ===== Load Song =====
 
 function loadSong(){
 
-let song = songs[currentSong];
+    const song = songs[currentSong];
 
-title.innerText = song.name;
-artist.innerText = song.artist;
+    title.textContent = song.name;
+    artist.textContent = song.artist;
+    cover.src = song.image;
 
-cover.src = song.image;
-
-audio.src = song.src;
+    audio.src = song.src;
+    audio.load();
 
 }
 
+loadSong();
 
-// Play
+// ===== Play =====
 
 function playSong(){
 
-audio.play()
-.then(()=>{
+    audio.play();
 
-playBtn.innerText="⏸";
-cover.classList.add("playing");
+    playBtn.textContent = "⏸";
 
-})
-.catch(()=>{
-
-alert("Song load nahi ho raha. songs folder check karo.");
-
-});
+    cover.classList.add("playing");
 
 }
 
-
-// Pause
+// ===== Pause =====
 
 function pauseSong(){
 
-audio.pause();
+    audio.pause();
 
-playBtn.innerText="▶️";
+    playBtn.textContent = "▶️";
 
-cover.classList.remove("playing");
-
-}
-
-
-// Play Pause
-
-playBtn.onclick=()=>{
-
-if(audio.paused){
-
-playSong();
-
-}else{
-
-pauseSong();
+    cover.classList.remove("playing");
 
 }
 
-};
+// ===== Play Button =====
 
+playBtn.addEventListener("click",()=>{
 
+    if(audio.paused){
 
-// Next
+        playSong();
 
-nextBtn.onclick=()=>{
+    }else{
 
-currentSong++;
+        pauseSong();
 
-if(currentSong >= songs.length){
+    }
 
-currentSong=0;
+});// ===== Next =====
 
-}
+nextBtn.addEventListener("click", () => {
 
-loadSong();
+    currentSong++;
 
-playSong();
+    if (currentSong >= songs.length) {
 
-};
+        currentSong = 0;
 
+    }
 
-
-// Previous
-
-prevBtn.onclick=()=>{
-
-currentSong--;
-
-if(currentSong < 0){
-
-currentSong=songs.length-1;
-
-}
-
-loadSong();
-
-playSong();
-
-};
-
-
-
-// Progress
-
-audio.addEventListener("timeupdate",()=>{
-
-if(audio.duration){
-
-progress.value =
-(audio.currentTime/audio.duration)*100;
-
-}
+    loadSong();
+    playSong();
 
 });
 
+// ===== Previous =====
 
+prevBtn.addEventListener("click", () => {
 
-progress.oninput=()=>{
+    currentSong--;
 
-audio.currentTime =
-(progress.value/100)*audio.duration;
+    if (currentSong < 0) {
 
-};
+        currentSong = songs.length - 1;
 
+    }
 
-
-// Volume
-
-volume.oninput=()=>{
-
-audio.volume=volume.value;
-
-};
-
-
-
-// Playlist
-
-songs.forEach((song,index)=>{
-
-let li=document.createElement("li");
-
-li.innerText=song.name;
-
-
-li.onclick=()=>{
-
-currentSong=index;
-
-loadSong();
-
-playSong();
-
-};
-
-
-songList.appendChild(li);
+    loadSong();
+    playSong();
 
 });
 
+// ===== Progress =====
 
+audio.addEventListener("timeupdate", () => {
 
-// Auto Next
+    if (!audio.duration) return;
 
-audio.onended=()=>{
+    progress.value = (audio.currentTime / audio.duration) * 100;
 
-nextBtn.click();
+    current.textContent = formatTime(audio.currentTime);
+    duration.textContent = formatTime(audio.duration);
 
-};
+});
 
+// ===== Seek =====
 
+progress.addEventListener("input", () => {
 
-// Start
+    if (audio.duration) {
+
+        audio.currentTime = (progress.value / 100) * audio.duration;
+
+    }
+
+});
+
+// ===== Volume =====
+
+volume.addEventListener("input", () => {
+
+    audio.volume = volume.value;
+
+});
+
+// ===== Playlist =====
+
+songList.innerHTML = "";
+
+songs.forEach((song, index) => {
+
+    const li = document.createElement("li");
+
+    li.textContent = song.name;
+
+    li.addEventListener("click", () => {
+
+        currentSong = index;
+
+        loadSong();
+
+        playSong();
+
+    });
+
+    songList.appendChild(li);
+
+});
+
+// ===== Shuffle =====
+
+shuffleBtn.addEventListener("click", () => {
+
+    shuffle = !shuffle;
+
+});
+
+// ===== Repeat =====
+
+repeatBtn.addEventListener("click", () => {
+
+    repeat = !repeat;
+
+    audio.loop = repeat;
+
+});
+
+// ===== Auto Next =====
+
+audio.addEventListener("ended", () => {
+
+    if (repeat) return;
+
+    if (shuffle) {
+
+        currentSong = Math.floor(Math.random() * songs.length);
+
+    } else {
+
+        currentSong++;
+
+        if (currentSong >= songs.length) {
+
+            currentSong = 0;
+
+        }
+
+    }
+
+    loadSong();
+    playSong();
+
+});
+
+// ===== Time Format =====
+
+function formatTime(time) {
+
+    const min = Math.floor(time / 60);
+    const sec = Math.floor(time % 60);
+
+    return `${min}:${sec < 10 ? "0" : ""}${sec}`;
+
+}
+
+// ===== Default Volume =====
+
+audio.volume = 1;
+volume.value = 1;
 
